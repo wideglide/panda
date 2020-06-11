@@ -4,7 +4,11 @@
 
 #define PYPANDA 1
 
+// probably a better way... 
 typedef target_ulong target_ptr_t;
+
+// XXX: These are defined in plugin.h, but we can't include all of plugin.h
+//      here without redefining things. Necessary for something? cb-defs?
 #define MAX_PANDA_PLUGINS 16
 #define MAX_PANDA_PLUGIN_ARGS 32
 
