@@ -252,6 +252,9 @@ elif arch == "x86_64":
 elif arch == "arm":
     define_clean_header(ffi, "{inc}/panda_datatypes_ARM_32.h")
     define_clean_header(ffi, "{inc}/syscalls_ext_typedefs_arm.h")
+elif arch == "aarch64":
+    define_clean_header(ffi, "{inc}/panda_datatypes_AARCH64.h")
+    print("SYSCALLS unsupported")
 elif arch == "ppc" and int(bits) == 32:
     define_clean_header(ffi, "{inc}/panda_datatypes_PPC_32.h")
     print('WARNING: no syscalls support for PPC 32')

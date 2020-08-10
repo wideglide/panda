@@ -49,7 +49,7 @@ class Panda(libpanda_mixins, libqemu_mixins, blocking_mixins, osi_mixins, hookin
     It attempts to be less complicated by using mixins. All mixin methods are avaiable to the main PANDA object.
 
         Attributes:
-            arch : architecture string (e.g. "i386", "x86_64", "arm", "mips", "mipsel")
+            arch : architecture string (e.g. "i386", "x86_64", "arm", "aarch64", "mips", "mipsel")
             mem : size of memory for machine (e.g. "128M", "1G")
             expect_prompt : Regular expression describing the prompt exposed by the guest 
                 on a serial console. Used so we know when a running command has finished 

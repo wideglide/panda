@@ -24,7 +24,7 @@ osi_test
 pri
 pri_dwarf
 pri_simple
-recctrl
+#recctrl
 replaymovie
 scissors
 stringsearch
