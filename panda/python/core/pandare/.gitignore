@@ -1,4 +1,5 @@
 __pycache__
 data
 autogen/*
+plog_pb2.py
 !autogen/.gitkeep
