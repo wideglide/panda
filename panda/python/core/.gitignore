@@ -5,3 +5,5 @@ build
 dist
 panda.egg-info
 data
+__pycache__
+*.egg-info
