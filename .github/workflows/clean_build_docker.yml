@@ -1,28 +1,21 @@
 name: Docker Build - Clean
-# For PRs to master, build from a clean image
-#
-# Clone latest pre-built docker container
-# Checkout the relevant branch
-# Run make clean && make in the build directory
-
-# Because this runs on PR actions, $GITHUB_SHA is set to some weird branch
-# so we pass $GITHUB_REF
+# For PRs to master or pushes that modify the root Dockerfile, build from scratch
 
 on:
   pull_request:
     branches:
       - master
+  push:
+    paths: ['Dockerfile'] # If this changed, we need to do a clean build
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - name: Fetch pre-built bionic docker container
-      run: docker pull pandare/panda:latest
+    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda
 
-    - uses: actions/checkout@v1
+    - name: Build docker container from project root
+      run: docker build /home/runner/work/panda -f /home/runner/work/panda/Dockerfile -t panda_local
 
-    - name: Map code into container and do a clean build
-      run: docker run --rm -v /home/runner/work/panda/panda/:/panda pandare/panda bash -c "rm -rf /panda/build; mkdir /panda/build && cd /panda/build && ../build.sh && cd /panda/panda/python/core && pip3 install -q pycparser cffi colorama protobuf && python3 setup.py install >/dev/null"
+    - name: Minimal test of built container
+      run: docker run --rm panda_local panda-system-arm -help | grep 'usage: panda-system-arm'
