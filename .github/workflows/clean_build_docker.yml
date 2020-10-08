@@ -17,5 +17,5 @@ jobs:
     - name: Build docker container from project root
       run: docker build /home/runner/work/panda -f /home/runner/work/panda/Dockerfile -t panda_local
 
-    - name: Minimal test of built container
-      run: docker run --rm panda_local panda-system-arm -help | grep 'usage: panda-system-arm'
+    - name: Minimal test of built container # Just test to see if one of our binaries is installed
+      run: docker run --rm panda_local /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage: panda-system-arm")'
