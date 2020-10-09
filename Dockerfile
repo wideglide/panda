@@ -34,6 +34,8 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 COPY . /panda/
 WORKDIR "/panda"
 
+RUN ls 
+
 # Update submodules
 RUN git submodule init && git submodule update --recursive
 
