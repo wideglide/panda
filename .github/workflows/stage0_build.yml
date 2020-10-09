@@ -16,10 +16,10 @@ jobs:
     runs-on: self-hosted
     steps:
  
-    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda
+    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda/panda/
 
     - name: Build docker container from project root
-      run: "cd /home/runner/work/panda && docker build -t panda_local_${{ github.sha }} ."
+      run: "cd /home/runner/work/panda/panda && docker build -t panda_local_${{ github.sha }} ."
 
     - name: Minimal test of built container # Just test to see if one of our binaries is installed
       run: docker run --rm "panda_local_${{ github.sha }}" /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage. panda-system-arm")'
