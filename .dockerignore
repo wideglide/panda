@@ -3,4 +3,4 @@ venv
 Dockerfile
 .*sw*
 .dockerignore
-
+.github
