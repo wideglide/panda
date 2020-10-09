@@ -16,10 +16,7 @@ jobs:
     runs-on: self-hosted
     steps:
  
-    - uses: actions/checkout@v2 # Clones code into to $GITHUB_WORKSPACE (/home/gha-svc/actions-runner-X/_work/panda/panda - where X might change?
-
-    - name: Test
-      run: cd $GITHUB_WORKSPACE && ls -alt .git
+    - uses: actions/checkout@v2 # Clones to $GITHUB_WORKSPACE. NOTE: this requires git > 2.18 (not on ubuntu 18.04 by default) to get .git directory
 
     - name: Build docker container from project root
       run: cd $GITHUB_WORKSPACE && docker build -t panda_local_${{ github.sha }} .
