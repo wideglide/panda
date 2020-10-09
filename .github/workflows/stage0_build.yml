@@ -16,13 +16,16 @@ jobs:
     runs-on: self-hosted
     steps:
  
-    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda/panda/
+    - uses: actions/checkout@v2 # Clones code into to /home/runner/work/panda/panda/?
 
     - name: Test
       run: "find /home/runner -name panda"
 
     - name: Test2
-      run: "ls -al /home/runner/work/panda/panda"
+      run: "cd /home/runner/work/panda/panda && ls -alt"
+
+    - name: Test2
+      run: "echo $GITHUB_WORKSPACE"
 
     - name: Build docker container from project root
       run: "cd /home/runner/work/panda/panda && docker build -t panda_local_${{ github.sha }} ."
