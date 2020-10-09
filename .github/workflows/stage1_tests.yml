@@ -1,4 +1,4 @@
-name: Stage 1: Tests
+name: Stage 1- Tests
 # Given a container with PANDA installed, run tests. Note jobs run in paralle
 # TODO: cleanup after these all finish
 
@@ -15,6 +15,7 @@ jobs:
       matrix:
         target: [i386, x86_64]
 
+    steps:
     # Given a container with PANDA installed at /panda, run the taint tests
     - name: Run taint tests inside current container
       run: >-
@@ -42,6 +43,7 @@ jobs:
         target: [check-qtest-x86_64, check-qtest-i386, check-qtest-arm, check-qtest-mips, check-qtest-mipsel, test-qtest-ppc,
         check-block, check-unit, check-qapi-schema]
 
+    steps:
     - name: Run Individual QEMU tests
       run: >-
         docker run --name panda_test_${{ matrix.target }}_${GITHUB_RUN_ID}

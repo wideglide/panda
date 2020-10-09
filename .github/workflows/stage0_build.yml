@@ -1,4 +1,4 @@
-name: Stage 0: Build Container (from scratch)
+name: Stage 0- Build Container (from scratch)
 # For PRs to master or pushes that modify the root Dockerfile, build from scratch
 # For forked repos that can't use our self-hosted test suite, just build and run make check
 
