@@ -29,12 +29,11 @@ RUN pip3 install pycparser
 # There's no python2 in this container - make python->python3 for convenience
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-# Copy repo root directory to /panda
+# Copy repo root directory to /panda, note we explicitly copy in .git directory
 # Note .dockerignore file keeps us from copying everything
 COPY . /panda/
+COPY .git /panda/
 WORKDIR "/panda"
-
-RUN ls 
 
 # Update submodules
 RUN git submodule init && git submodule update --recursive
