@@ -18,6 +18,9 @@ jobs:
  
     - uses: actions/checkout@v2 # Clones code into to $GITHUB_WORKSPACE (/home/gha-svc/actions-runner-X/_work/panda/panda - where X might change?
 
+    - name: Test
+      run: cd $GITHUB_WORKSPACE && ls -alt .git
+
     - name: Build docker container from project root
       run: cd $GITHUB_WORKSPACE && docker build -t panda_local_${{ github.sha }} .
 
