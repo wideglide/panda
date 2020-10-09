@@ -16,19 +16,10 @@ jobs:
     runs-on: self-hosted
     steps:
  
-    - uses: actions/checkout@v2 # Clones code into to /home/runner/work/panda/panda/?
-
-    - name: Test
-      run: "find /home/runner -name panda"
-
-    - name: Test2
-      run: "cd /home/runner/work/panda/panda && ls -alt"
-
-    - name: Test2
-      run: "echo $GITHUB_WORKSPACE"
+    - uses: actions/checkout@v2 # Clones code into to $GITHUB_WORKSPACE (/home/gha-svc/actions-runner-X/_work/panda/panda - where X might change?
 
     - name: Build docker container from project root
-      run: "cd /home/runner/work/panda/panda && docker build -t panda_local_${{ github.sha }} ."
+      run: docker build -f $GITHUB_WORKSPACE/Dockerfile -t panda_local_${{ github.sha }} $GITHUB_WORKSPACE 
 
     - name: Minimal test of built container # Just test to see if one of our binaries is installed
       run: docker run --rm "panda_local_${{ github.sha }}" /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage. panda-system-arm")'
@@ -50,7 +41,7 @@ jobs:
     - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda
 
     - name: Build docker container from project root
-      run: docker build /home/runner/work/panda -f /home/runner/work/panda/Dockerfile -t panda_local
+      run: docker build $GITHUB_WORKSPACE -f $GITHUB_WORKSPACE/Dockerfile -t panda_local .
 
     - name: Minimal test of built container # Just test to see if one of our binaries is installed
       run: docker run --rm panda_local /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage. panda-system-arm")'
