@@ -1,0 +1,50 @@
+name: Stage 0: Build Container (from scratch)
+# For PRs to master or pushes that modify the root Dockerfile, build from scratch
+# For forked repos that can't use our self-hosted test suite, just build and run make check
+
+on:
+  pull_request:
+    branches:
+      - master
+  #push:
+  #  paths: ['Dockerfile'] # If this file changed, we'd need to do a clean build (this action)
+  #  otherwise we could speed this up
+
+jobs:
+  build_container:
+    if: github.repository  == 'panda-re/panda'
+    runs-on: self-hosted
+    steps:
+ 
+    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda
+
+    - name: Build docker container from project root
+      run: docker build /home/runner/work/panda -f /home/runner/work/panda/Dockerfile -t "panda_local_${{ github.sha }}"
+
+    - name: Minimal test of built container # Just test to see if one of our binaries is installed
+      run: docker run --rm "panda_local_${{ github.sha }}" /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage. panda-system-arm")'
+
+    - name: Trigger Stage 1 Tests
+      if: success()
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.AF_REPO_GHA_PAT }}
+        repository: ${{ github.repository }}
+        event-type: trigger-workflow-2
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+
+  build_and_check_fork: # Forked repos can't use self-hosted test suite - just checkout and run make check
+    if: github.repository != 'panda-re/panda'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1 # Clones code into to /home/runner/work/panda
+
+    - name: Build docker container from project root
+      run: docker build /home/runner/work/panda -f /home/runner/work/panda/Dockerfile -t panda_local
+
+    - name: Minimal test of built container # Just test to see if one of our binaries is installed
+      run: docker run --rm panda_local /bin/bash -c 'exit $(panda-system-arm -help | grep -q "usage. panda-system-arm")'
+
+    - name: Minimal test of built container # Just test to see if one of our binaries is installed
+      run: docker run --rm panda_local /bin/bash -c 'cd /panda/build && make check'
